@@ -13,3 +13,64 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  dfds      Dfd[]
+
+  @@map("users")
+}
+
+model Dfd {
+  id        String @id @default(uuid())
+  numeroDFD String
+  matricula_Decreto String
+  email String
+  telefone String
+  descricaoObjeto String
+  justificativaNecessidade String
+  estimativaValor String
+  prazoContratacao DateTime
+  grauPrioridade Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  unidadeGeradora    UnidadeGeradora @relation(fields: [unidadeGeradora_id], references: [id])
+  unidadeGeradora_id String
+
+  setorRequisitante    SetorRequisitante @relation(fields: [setorRequisitante_id], references: [id])
+  setorRequisitante_id String
+
+  responsavelDemanda    User   @relation(fields: [responsavelDemanda_id], references: [id])
+  responsavelDemanda_id String
+
+  @@map("dfds")
+}
+
+model UnidadeGeradora {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  dfds Dfd[]
+
+  @@map("unidades_geradoras")
+}
+
+model SetorRequisitante {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  dfds Dfd[]
+
+  @@map("setores_requisitantes")
+}
