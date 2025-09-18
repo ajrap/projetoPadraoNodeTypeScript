@@ -25,7 +25,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
  //se for um erro desconhecido
   return res.status(500).json({
     status: 'error',
-    message: 'Internal Server Error'
+    message: 'Internal Server Error!'
   });
 });
 
